@@ -1,3 +1,4 @@
+[![Smotret-Anime.ru](https://smotret-anime.ru/images/logo.png)](https://smotret-anime.ru)
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/anime-db/smotret-anime-browser-bundle.svg?maxAge=3600&label=stable)](https://packagist.org/packages/anime-db/smotret-anime-browser-bundle)
 [![Total Downloads](https://img.shields.io/packagist/dt/anime-db/smotret-anime-browser-bundle.svg?maxAge=3600)](https://packagist.org/packages/anime-db/smotret-anime-browser-bundle)
