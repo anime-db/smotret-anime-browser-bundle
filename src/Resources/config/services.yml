@@ -1,0 +1,8 @@
+services:
+    anime_db.smotret_anime.browser:
+        class: AnimeDb\Bundle\SmotretAnimeBrowserBundle\Service\Browser
+        arguments: [ '@anime_db.smotret_anime.browser.client', ~, ~, ~ ]
+
+    anime_db.smotret_anime.browser.client:
+        class: GuzzleHttp\Client
+        public: false
