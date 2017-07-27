@@ -73,20 +73,20 @@ $content = $browser->get('translations');
 Last translations for ongoings:
 
 ```php
-$content = $browser->get('translations', ['feed' => 'recent']);
+$content = $browser->get('translations?feed=recent');
 ```
 
 List of all translations (at the beginning of the oldest, convenient for a full scan):
 
 ```php
-$content = $browser->get('translations', ['feed' => 'id']);
+$content = $browser->get('translations?feed=id');
 ```
 
 When scanning in full, do not use the `offset` parameter. Use `afterId` (offset works very slowly when the account goes
 to hundreds of thousands of translations):
 
 ```php
-$content = $browser->get('translations', ['feed' => 'id', 'afterId' => 10000]);
+$content = $browser->get('translations?feed=id&afterId=10000');
 ```
 
 One translation:
@@ -106,25 +106,25 @@ $content = $browser->get('series');
 You can select only specific fields:
 
 ```php
-$content = $browser->get('series', ['fields' => 'id,title,typeTitle,posterUrlSmall']);
+$content = $browser->get('series?fields=id,title,typeTitle,posterUrlSmall');
 ```
 
 Advanced filter as on the [site](https://smotret-anime.ru/catalog/filter/genre@=8,35;genre_op=and):
 
 ```php
-$content = $browser->get('series', ['chips' => 'genre@=8,35;genre_op=and']);
+$content = $browser->get('series?chips=genre@=8,35;genre_op=and');
 ```
 
 You can filter by parameters:
 
 ```php
-$content = $browser->get('series', ['myAnimeListId' => 24133]);
+$content = $browser->get('series?myAnimeListId=24133');
 ```
 
 Search by name:
 
 ```php
-$content = $browser->get('series', ['query' => 'gate']);
+$content = $browser->get('series?query=gate');
 ```
 
 Information about a specific anime and a list of episodes:
@@ -146,8 +146,12 @@ $content = $browser->get('episodes/102173');
 Through `limit` and `offset`, you can adjust the number of elements "on the page" and the offset from the beginning:
 
 ```php
-$content = $browser->get('series', ['limit' => 1, 'offset' => 10]);
+$content = $browser->get('series?limit=1&offset=10');
 ```
+
+### Request options
+
+You can customize request options. See [Guzzle Documentation](http://docs.guzzlephp.org/en/stable/request-options.html).
 
 License
 -------
