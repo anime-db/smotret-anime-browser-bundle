@@ -149,6 +149,20 @@ Through `limit` and `offset`, you can adjust the number of elements "on the page
 $content = $browser->get('series?limit=1&offset=10');
 ```
 
+### Catch exceptions
+
+```php
+use AnimeDb\Bundle\SmotretAnimeBrowserBundle\Exception\NotFoundException;
+
+try {
+    $content = $browser->get('series/1');
+} catch (NotFoundException $e) {
+    // series not found
+} catch (\Exception $e) {
+    // other exceptions
+}
+```
+
 ### Request options
 
 You can customize request options. See [Guzzle Documentation](http://docs.guzzlephp.org/en/stable/request-options.html).
