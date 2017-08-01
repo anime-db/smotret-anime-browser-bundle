@@ -29,9 +29,9 @@ class AnimeDbSmotretAnimeBrowserExtension extends Extension
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $container->getDefinition('anime_db.smotret_anime.browser')
-            ->replaceArgument(1, $config['host'])
-            ->replaceArgument(2, $config['prefix'])
-            ->replaceArgument(3, $config['client'])
+            ->replaceArgument(2, $config['host'])
+            ->replaceArgument(3, $config['prefix'])
+            ->replaceArgument(4, $config['client'])
         ;
     }
 }

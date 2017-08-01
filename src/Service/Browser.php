@@ -10,14 +10,19 @@
 
 namespace AnimeDb\Bundle\SmotretAnimeBrowserBundle\Service;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as HttpClient;
 
 class Browser
 {
     /**
-     * @var Client
+     * @var HttpClient
      */
     private $client;
+
+    /**
+     * @var ErrorDetector
+     */
+    private $detector;
 
     /**
      * @var string
@@ -35,14 +40,16 @@ class Browser
     private $app_client;
 
     /**
-     * @param Client $client
-     * @param string $host
-     * @param string $prefix
-     * @param string $app_client
+     * @param HttpClient    $client
+     * @param ErrorDetector $detector
+     * @param string        $host
+     * @param string        $prefix
+     * @param string        $app_client
      */
-    public function __construct(Client $client, $host, $prefix, $app_client)
+    public function __construct(HttpClient $client, ErrorDetector $detector, $host, $prefix, $app_client)
     {
         $this->client = $client;
+        $this->detector = $detector;
         $this->host = $host;
         $this->prefix = $prefix;
         $this->app_client = $app_client;
@@ -52,7 +59,7 @@ class Browser
      * @param string $path
      * @param array  $options
      *
-     * @return string
+     * @return array
      */
     public function get($path, array $options = [])
     {
@@ -63,8 +70,6 @@ class Browser
 
         $response = $this->client->request('GET', $this->host.$this->prefix.$path, $options);
 
-        $content = $response->getBody()->getContents();
-
-        return json_decode($content, true);
+        return $this->detector->detect($response);
     }
 }

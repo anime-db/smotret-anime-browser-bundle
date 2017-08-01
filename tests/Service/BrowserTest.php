@@ -11,9 +11,9 @@
 namespace AnimeDb\Bundle\SmotretAnimeBrowserBundle\Tests\Service;
 
 use AnimeDb\Bundle\SmotretAnimeBrowserBundle\Service\Browser;
+use AnimeDb\Bundle\SmotretAnimeBrowserBundle\Service\ErrorDetector;
 use GuzzleHttp\Client as HttpClient;
-use Psr\Http\Message\MessageInterface;
-use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\ResponseInterface;
 
 class BrowserTest extends \PHPUnit_Framework_TestCase
 {
@@ -38,14 +38,14 @@ class BrowserTest extends \PHPUnit_Framework_TestCase
     private $client;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|StreamInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|ErrorDetector
      */
-    private $stream;
+    private $detector;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|MessageInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|ResponseInterface
      */
-    private $message;
+    private $response;
 
     /**
      * @var Browser
@@ -55,10 +55,10 @@ class BrowserTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->client = $this->getMock(HttpClient::class);
-        $this->stream = $this->getMock(StreamInterface::class);
-        $this->message = $this->getMock(MessageInterface::class);
+        $this->detector = $this->getMock(ErrorDetector::class);
+        $this->response = $this->getMock(ResponseInterface::class);
 
-        $this->browser = new Browser($this->client, $this->host, $this->prefix, $this->app_client);
+        $this->browser = new Browser($this->client, $this->detector, $this->host, $this->prefix, $this->app_client);
     }
 
     /**
@@ -92,28 +92,22 @@ class BrowserTest extends \PHPUnit_Framework_TestCase
             $params['headers']['User-Agent'] = $app_client;
         }
 
-        $expected = ['Hello, world!'];
-        $content = json_encode($expected);
-
-        $this->stream
-            ->expects($this->once())
-            ->method('getContents')
-            ->will($this->returnValue($content))
-        ;
-
-        $this->message
-            ->expects($this->once())
-            ->method('getBody')
-            ->will($this->returnValue($this->stream))
-        ;
+        $data = ['Hello, world!'];
 
         $this->client
             ->expects($this->once())
             ->method('request')
             ->with('GET', $this->host.$this->prefix.$path, $options)
-            ->will($this->returnValue($this->message))
+            ->will($this->returnValue($this->response))
         ;
 
-        $this->assertEquals($expected, $this->browser->get($path, $params));
+        $this->detector
+            ->expects($this->once())
+            ->method('detect')
+            ->with($this->response)
+            ->will($this->returnValue($data))
+        ;
+
+        $this->assertEquals($data, $this->browser->get($path, $params));
     }
 }

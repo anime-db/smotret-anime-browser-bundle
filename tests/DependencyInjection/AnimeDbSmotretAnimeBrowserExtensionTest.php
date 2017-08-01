@@ -77,19 +77,19 @@ class AnimeDbSmotretAnimeBrowserExtensionTest extends \PHPUnit_Framework_TestCas
         $browser
             ->expects($this->at(0))
             ->method('replaceArgument')
-            ->with(1, $host)
+            ->with(2, $host)
             ->will($this->returnSelf())
         ;
         $browser
             ->expects($this->at(1))
             ->method('replaceArgument')
-            ->with(2, $prefix)
+            ->with(3, $prefix)
             ->will($this->returnSelf())
         ;
         $browser
             ->expects($this->at(2))
             ->method('replaceArgument')
-            ->with(3, $client)
+            ->with(4, $client)
             ->will($this->returnSelf())
         ;
 
